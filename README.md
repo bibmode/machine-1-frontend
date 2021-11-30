@@ -74,24 +74,33 @@
  -This is a snippet from the get-grants.php file [here](https://github.com/bibmode/machine-1-backend/blob/main/server/get-grants.php)
  
 ```
-   $username = htmlspecialchars(trim($data->username));
-  $host = htmlspecialchars(trim($data->host));
+  $username = htmlspecialchars(trim($data->username));
   $password = htmlspecialchars(trim($data->password));
+  $host = htmlspecialchars(trim($data->host));
+  $grants = htmlspecialchars(trim($data->grants));
 
-  $mysqli = new mysqli($host, $username, $password);
+  $query = "CREATE USER :username@:host IDENTIFIED BY :password";
 
-  if ($mysqli->connect_errno) {
-    echo "Failed to connect to MySQL: " . $mysqli->connect_error;
-    exit();
+  $stmt = $conn->prepare($query);
+
+  $stmt->bindValue(':username', $username, PDO::PARAM_STR);
+  $stmt->bindValue(':password', $password, PDO::PARAM_STR);
+  $stmt->bindValue(':host', $host, PDO::PARAM_STR);
+
+  if ($stmt->execute()) {
+
+    $query2 = "GRANT $grants ON * . * TO $username@$host";
+
+    $stmt2 = $conn->prepare($query2);
+
+    $stmt2->execute();
+
+    echo json_encode([
+      'success' => 1,
+      'message' => 'added user to system.'
+    ]);
+    exit;
   }
-
-  $result = $mysqli->query("SHOW GRANTS for $username@$host");
-
-  while ($row = mysqli_fetch_array($result)) {
-    echo json_encode($row[0]);
-  }
-
-  exit;
 ```
 
 ## User database:
