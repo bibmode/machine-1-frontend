@@ -11,6 +11,11 @@
 - [Overview](#overview)
   - [The challenge](#the-challenge)
 - [1. Adding new user](#adding-new-user)
+  - [SQL commands](#sql-commands-1)
+- [2. Login user and show grants](#login-user-and-show-grants)
+  - [Login page](#login-page)
+  - [User page](#user-page)
+  - [SQL commands](#sql-commands-2)
 - [My process](#my-process)
   - [Built with](#built-with)
   - [What I learned](#what-i-learned)
@@ -31,7 +36,7 @@
 
 [![screencapture-localhost-3000-2021-11-30-23-01-28.png](https://i.postimg.cc/NjC9stnX/screencapture-localhost-3000-2021-11-30-23-01-28.png)](https://postimg.cc/DSsy69nf)
  
- ### SQL commands:
+ ### SQL commands 1:
  -This is a snippet from the add-user.php file [here](https://github.com/bibmode/machine-1-backend/blob/main/server/add-user.php)
  
 ```
@@ -56,14 +61,15 @@
 ```
 
 
-## Login user and Show Grants:
+## Login user and show grants:
 
  ### login page
-[![screencapture-localhost-3000-2021-11-30-23-11-21.png](https://i.postimg.cc/Vkv9BKQj/screencapture-localhost-3000-2021-11-30-23-11-21.png)](https://postimg.cc/ts0V9tgT)
+[![screencapture-localhost-3000-2021-11-30-23-18-16.png](https://i.postimg.cc/Fzgtp9Sn/screencapture-localhost-3000-2021-11-30-23-18-16.png)](https://postimg.cc/Cn16Lpmj)
 
- ### show grants
+ ### user page
+[![screencapture-localhost-3000-genebeeeb-2021-11-30-23-20-12.png](https://i.postimg.cc/yYV2BCcs/screencapture-localhost-3000-genebeeeb-2021-11-30-23-20-12.png)](https://postimg.cc/NLzd7Vdz)
  
- ### SQL commands:
+ ### SQL commands 2:
  -This is a snippet from the get-grants.php file [here](https://github.com/bibmode/machine-1-backend/blob/main/server/get-grants.php)
  
 ```
@@ -102,17 +108,15 @@
 ### What I learned
 
 In the process of this project, I learned a lot of things. Here are some of them:
-- Connecting the sql database to the front end using api calls
-- Binding data from user's input in the UI to php
-- Making POST, GET, UPDATE, and DELETE queries
-- How to debug in php using echo calls 
+- Creating new user in mysql using php
+- Getting user grants from mysql database
 
 ### Useful resources
 
-- [React JS + PHP + MySQL DB Login & Registration System](https://www.w3jar.com/react-js-php-mysql-db-login-registration-system/) - This helped me create the loginand registration system of this app.
-- [Getting started with React.js & PHP](https://www.youtube.com/watch?v=BPGIrau9dW4&t=99s&ab_channel=Keith%2CtheCoder) - This is an amazing video that helped me in connecting my frontend folder to the backend folder using react and php
+- [PHP Cheat Sheet](https://overapi.com/php) - List of all PHP methods.
+- [Learning About Electronics](http://www.learningaboutelectronics.com/PHP/) - This is a wonderful resource of PHP tutorials
 
 
 ## Acknowledgments
 
-Thank you to Sir Mark Phil B. Pacot, our IT107 professor, who gave this project as our assignment. This was a great learning experience for me and I'm sure I'll be able to use what I learned in this project in my next CRUD applications.
+Thank you to Sir Mark Phil B. Pacot, our IT107 professor, who gave this project as our assignment.
