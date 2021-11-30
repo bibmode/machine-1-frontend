@@ -10,7 +10,7 @@
 
 - [Overview](#overview)
   - [The challenge](#the-challenge)
-  - [1. Adding new user](#add-user)
+  - [1. Adding new user](#1. Adding new user)
   - [Links](#links)
 - [How to use](#how-to-use)
 - [My process](#my-process)
