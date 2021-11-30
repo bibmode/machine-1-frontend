@@ -95,6 +95,7 @@
 ```
 
 ## User database:
+ - This is the final database with the new user added
 [![screencapture-localhost-phpmyadmin-index-php-2021-11-30-23-29-17.jpg](https://i.postimg.cc/HsNx7zpc/screencapture-localhost-phpmyadmin-index-php-2021-11-30-23-29-17.jpg)](https://postimg.cc/bsQ87QSp)
 
 ## My process
