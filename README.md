@@ -10,7 +10,7 @@
 
 - [Overview](#overview)
   - [The challenge](#the-challenge)
-  - [1. Adding new user](#1. Adding new user)
+  - [1. Adding new user](#adding-new-user)
   - [Links](#links)
 - [How to use](#how-to-use)
 - [My process](#my-process)
@@ -28,7 +28,7 @@
 - Develop a web-based login page for the authentication of users before the system's access.
 - Create a webpage that will display the user's assigned privileges every after successful entry to the system.
 
-### 1. Adding new user:
+### Adding new user:
 - Get the tasks and notes of the user logged in
 - Post new task and memo to the database under the user's id
 - Update tasks' and memos' details by their ids
