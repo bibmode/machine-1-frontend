@@ -95,7 +95,7 @@
 ```
 
 ## User database:
-[![screencapture-localhost-phpmyadmin-index-php-2021-11-30-23-29-17.png](https://i.postimg.cc/wTg3pMwM/screencapture-localhost-phpmyadmin-index-php-2021-11-30-23-29-17.png)](https://postimg.cc/nMSnKFbf)
+[![screencapture-localhost-phpmyadmin-index-php-2021-11-30-23-29-17.jpg](https://i.postimg.cc/HsNx7zpc/screencapture-localhost-phpmyadmin-index-php-2021-11-30-23-29-17.jpg)](https://postimg.cc/bsQ87QSp)
 
 ## My process
 
