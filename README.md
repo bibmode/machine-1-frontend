@@ -16,6 +16,7 @@
   - [Login page](#login-page)
   - [User page](#user-page)
   - [SQL commands](#sql-commands-2)
+- [User Database](#user-database)
 - [My process](#my-process)
   - [Built with](#built-with)
   - [What I learned](#what-i-learned)
@@ -92,6 +93,9 @@
 
   exit;
 ```
+
+## User database:
+[![screencapture-localhost-phpmyadmin-index-php-2021-11-30-23-29-17.png](https://i.postimg.cc/wTg3pMwM/screencapture-localhost-phpmyadmin-index-php-2021-11-30-23-29-17.png)](https://postimg.cc/nMSnKFbf)
 
 ## My process
 
