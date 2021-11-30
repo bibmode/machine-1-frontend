@@ -26,41 +26,66 @@
 - Develop a web-based login page for the authentication of users before the system's access.
 - Create a webpage that will display the user's assigned privileges every after successful entry to the system.
 
+
 ## Adding new user:
-- Get the tasks and notes of the user logged in
-- Post new task and memo to the database under the user's id
-- Update tasks' and memos' details by their ids
-- Get tasks and notes by inputted keywords
 
-### Links
-
-**Note: I will be deploying this entire app in the future. I have a limited time to deploy it on heroku which I have not used before since the deadline of this school project is later this day @ 12:00 am 2021-11-28. To use it for now, follow the instructions in the How-to-use section.**
-<!--
-- Solution URL: [Add solution URL here](https://your-solution-url.com)
-- Live Site URL: [Add live site URL here](https://your-live-site-url.com)
--->
-
-## How to use
-
-To clone and run this application, you'll need [Git](https://git-scm.com) and [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) installed on your computer. 
-
- 1. clone this repo and put it in the htdocs under your xampp folder
- 2. create a new database and name it notes-app
- 3. create a users table with these properties: 
- [![Capture.jpg](https://i.postimg.cc/8zsj8t4t/Capture.jpg)](https://postimg.cc/5XdxL5ZC)
- 4. under the users table create a new user named Visitor with an id number of 8 with this sql command:
-```
-INSERT INTO `users` (`id`, `name`, `email`, `password`) VALUES (8, 'Visitor', 'test@gmail.com', '$2y$10$1KqJrmpixqLY36gIyllJfuQFWreJbVw7ZYiTtXcuXHQ1WX7qILZcS')
-```
- 5. create a memos table with these properties: 
- [![Capture.jpg](https://i.postimg.cc/g2SdppjZ/Capture.jpg)](https://postimg.cc/WdkxmQMN)
- 6. create a todos table with these properties: 
- [![Capture.jpg](https://i.postimg.cc/ZRmwDBmF/Capture.jpg)](https://postimg.cc/p90Qmdpp)
- 7. run the apache and mysql in your xampp control panel
+ [![Capture.jpg]([![screencapture-localhost-3000-2021-11-30-23-01-28.png](https://i.postimg.cc/NjC9stnX/screencapture-localhost-3000-2021-11-30-23-01-28.png)](https://postimg.cc/DSsy69nf))
  
- ## Results
- [![ezgif-3-e61eb84aa8e5.gif](https://i.postimg.cc/9Qy4W1s2/ezgif-3-e61eb84aa8e5.gif)](https://postimg.cc/cv41h7sk)
+ ### SQL commands:
+ -This is a snippet from the add-user.php file [here](https://github.com/bibmode/machine-1-backend/blob/main/server/add-user.php)
+ 
+```
+  $query = "CREATE USER $username@$host IDENTIFIED BY $password";
 
+  $stmt = $conn->prepare($query);
+
+  if ($stmt->execute()) {
+
+    $query2 = "GRANT $grants ON * . * TO $username@$host";
+
+    $stmt2 = $conn->prepare($query2);
+
+    $stmt2->execute();
+
+    echo json_encode([
+      'success' => 1,
+      'message' => 'added user to system.'
+    ]);
+    exit;
+  }
+```
+
+
+## Login user and Show Grants:
+
+ ### login page
+[![screencapture-localhost-3000-2021-11-30-23-11-21.png](https://i.postimg.cc/Vkv9BKQj/screencapture-localhost-3000-2021-11-30-23-11-21.png)](https://postimg.cc/ts0V9tgT)
+
+ ### show grants
+ 
+ ### SQL commands:
+ -This is a snippet from the get-grants.php file [here](https://github.com/bibmode/machine-1-backend/blob/main/server/get-grants.php)
+ 
+```
+   $username = htmlspecialchars(trim($data->username));
+  $host = htmlspecialchars(trim($data->host));
+  $password = htmlspecialchars(trim($data->password));
+
+  $mysqli = new mysqli($host, $username, $password);
+
+  if ($mysqli->connect_errno) {
+    echo "Failed to connect to MySQL: " . $mysqli->connect_error;
+    exit();
+  }
+
+  $result = $mysqli->query("SHOW GRANTS for $username@$host");
+
+  while ($row = mysqli_fetch_array($result)) {
+    echo json_encode($row[0]);
+  }
+
+  exit;
+```
 
 ## My process
 
