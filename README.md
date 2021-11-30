@@ -69,7 +69,10 @@ INSERT INTO `users` (`id`, `name`, `email`, `password`) VALUES (8, 'Visitor', 't
 - [PHP](https://www.php.net/) - For connecting the backend to the frontend
 - [MySQL](https://www.mysql.com/) - Database service
 - [Apache](https://httpd.apache.org/) - For HTTP server
-- [JWT](https://jwt.io/) - For token authentication
+- [React](https://reactjs.org/) - Front frontend javascript library/framework
+- [Material UI](https://mui.com/) - CSS components library 
+- [Formik](https://formik.org/) - Form handling library
+- [Yup](https://github.com/jquense/yup) - Form validation library
 
 ### What I learned
 
