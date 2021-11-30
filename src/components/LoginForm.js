@@ -27,7 +27,7 @@ const Submit = styled(Button)(({ theme }) => ({
 }));
 
 const LoginForm = () => {
-  const { setToggleForm, getUserPriviledges, getGrantsArray } =
+  const { setToggleForm, getUserPriviledges, getGrantsArray, setLoginError } =
     useContext(AppContext);
 
   const navigate = useNavigate();
@@ -40,10 +40,20 @@ const LoginForm = () => {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      const access = await getUserPriviledges(values);
+      const username = values.username;
+      const password = values.password;
+      const host = values.host;
+
+      const entry = {
+        username,
+        password,
+        host,
+      };
+
+      const access = await getUserPriviledges(entry);
 
       if (access.includes("Access denied")) {
-        alert("wrong fields");
+        setLoginError(true);
         return;
       }
 

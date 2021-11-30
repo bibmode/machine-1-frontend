@@ -1,9 +1,10 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 import Gateway from "./pages/Gateway";
 import axios from "axios";
 import User from "./pages/User";
+import { Alert } from "@mui/material";
 
 export const AppContext = createContext(null);
 
@@ -39,10 +40,14 @@ function App() {
     "CREATE USER",
   ];
   const [chosenGrants, setChosenGrants] = useState([]);
+  const [loginError, setLoginError] = useState(false);
+  const [privilegeError, setPrivilegeError] = useState(false);
+  const [success, setSuccess] = useState(false);
 
-  const getUserPriviledges = async (values) => {
-    const res = await axios.get(
-      `http://localhost/machine-problem-1/server/priviledges.php?user=${values.username}&password=${values.password}&host=${values.host}`
+  const getUserPriviledges = async (entry) => {
+    const res = await axios.post(
+      "http://localhost/machine-problem-1/server/get-grants.php",
+      entry
     );
     const data = res.data;
     return data;
@@ -51,7 +56,9 @@ function App() {
   const getGrantsArray = (data) => {
     const sliceIndex = data.indexOf("ON *");
     const grantsArr = data.substring(6, sliceIndex - 1).split(", ");
-    setGrants(grantsArr);
+    grantsArr[0] === "ALL PRIVILEGES"
+      ? setGrants([].concat(dataGrants, strucGrants, adGrants))
+      : setGrants(grantsArr);
   };
 
   const getGrantType = (grant) => {
@@ -71,11 +78,59 @@ function App() {
   const insertNewUser = async (entry) => {
     axios
       .post(`http://localhost/machine-problem-1/server/add-user.php`, entry)
-      .then((res) => console.log(res));
+      .then((res) => setSuccess(true));
   };
+
+  useEffect(() => {
+    success &&
+      setTimeout(() => {
+        setSuccess(false);
+      }, 3000);
+  }, [success]);
+
+  useEffect(() => {
+    loginError &&
+      setTimeout(() => {
+        setLoginError(false);
+      }, 3000);
+  }, [loginError]);
+
+  useEffect(() => {
+    privilegeError &&
+      setTimeout(() => {
+        setPrivilegeError(false);
+      }, 3000);
+  }, [privilegeError]);
 
   return (
     <div className="App">
+      {loginError && (
+        <Alert
+          sx={{ position: "sticky", top: 0, zIndex: 1000 }}
+          severity="error"
+        >
+          Wrong login input/s!
+        </Alert>
+      )}
+
+      {privilegeError && (
+        <Alert
+          sx={{ position: "sticky", top: 0, zIndex: 1000 }}
+          severity="warning"
+        >
+          Choose atleast one privilege!
+        </Alert>
+      )}
+
+      {success && (
+        <Alert
+          sx={{ position: "sticky", top: 0, zIndex: 1000 }}
+          severity="success"
+        >
+          Successfully added new user to database!
+        </Alert>
+      )}
+
       <AppContext.Provider
         value={{
           toggleForm,
@@ -91,6 +146,9 @@ function App() {
           chosenGrants,
           setChosenGrants,
           insertNewUser,
+          setLoginError,
+          setPrivilegeError,
+          setSuccess,
         }}
       >
         <Router>

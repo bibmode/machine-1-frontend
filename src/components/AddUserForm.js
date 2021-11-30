@@ -39,6 +39,7 @@ const AddUserForm = () => {
     adGrants,
     chosenGrants,
     insertNewUser,
+    setPrivilegeError,
   } = useContext(AppContext);
 
   const formik = useFormik({
@@ -54,7 +55,7 @@ const AddUserForm = () => {
       const password = values.password;
       const host = values.host;
       const grants =
-        chosenGrants.length < 28 ? chosenGrants.toString() : "ALL PRIVILEDGES";
+        chosenGrants.length < 28 ? chosenGrants.toString() : "ALL PRIVILEGES";
 
       const entry = {
         username,
@@ -63,8 +64,10 @@ const AddUserForm = () => {
         grants,
       };
 
-      console.log(entry);
-      insertNewUser(entry);
+      console.log(entry, chosenGrants.length);
+      chosenGrants.length !== 0
+        ? insertNewUser(entry)
+        : setPrivilegeError(true);
     },
   });
 

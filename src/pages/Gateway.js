@@ -15,7 +15,6 @@ const FormWrapper = styled(Paper)(({ theme }) => ({
   [theme.breakpoints.up("sm")]: {
     width: 650,
   },
-  margin: "0 auto",
 }));
 
 const Gateway = () => {
@@ -23,7 +22,9 @@ const Gateway = () => {
 
   return (
     <Wrapper>
-      <Container>
+      <Container
+        sx={{ display: "flex", alignItems: "center", flexDirection: "column" }}
+      >
         <Typography sx={{ my: 3 }}>MACHINE PROBLEM 1</Typography>
 
         <FormWrapper elevation={3}>

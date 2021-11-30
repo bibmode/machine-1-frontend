@@ -7,7 +7,7 @@ import { useNavigate } from "react-router";
 
 const Wrapper = styled("div")(({ theme }) => ({
   minHeight: "100vh",
-  paddingTop: theme.spacing(8),
+  paddingBlock: theme.spacing(8),
 }));
 
 const User = () => {
