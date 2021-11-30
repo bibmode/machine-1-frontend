@@ -1,70 +1,92 @@
-# Getting Started with Create React App
+# MACHINE 1 PROBLEM - IT107
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<div align="center">
+  <h3>
+    This is a problem to add new users to mysql database with chosen grants. The user can also log in to see the privileges given to him/her.
+  </h3>
+</div>
 
-## Available Scripts
+## Table of contents
 
-In the project directory, you can run:
+- [Overview](#overview)
+  - [The challenge](#the-challenge)
+  - [APIs' features](#screenshot)
+  - [Links](#links)
+- [How to use](#how-to-use)
+- [My process](#my-process)
+  - [Built with](#built-with)
+  - [What I learned](#what-i-learned)
+  - [Useful resources](#useful-resources)
+- [Acknowledgments](#acknowledgments)
 
-### `npm start`
+**Note: Delete this note and update the table of contents based on what sections you keep.**
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Overview
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### The challenge:
+- Perform the adding of user/s to SQL database with limited privileges (own choice) via web-based interface.
+- Develop a web-based login page for the authentication of users before the system's access.
+- Create a webpage that will display the user's assigned privileges every after successful entry to the system.
 
-### `npm test`
+### APIs' features:
+- Get the tasks and notes of the user logged in
+- Post new task and memo to the database under the user's id
+- Update tasks' and memos' details by their ids
+- Get tasks and notes by inputted keywords
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Links
 
-### `npm run build`
+**Note: I will be deploying this entire app in the future. I have a limited time to deploy it on heroku which I have not used before since the deadline of this school project is later this day @ 12:00 am 2021-11-28. To use it for now, follow the instructions in the How-to-use section.**
+<!--
+- Solution URL: [Add solution URL here](https://your-solution-url.com)
+- Live Site URL: [Add live site URL here](https://your-live-site-url.com)
+-->
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## How to use
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+To clone and run this application, you'll need [Git](https://git-scm.com) and [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) installed on your computer. 
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+ 1. clone this repo and put it in the htdocs under your xampp folder
+ 2. create a new database and name it notes-app
+ 3. create a users table with these properties: 
+ [![Capture.jpg](https://i.postimg.cc/8zsj8t4t/Capture.jpg)](https://postimg.cc/5XdxL5ZC)
+ 4. under the users table create a new user named Visitor with an id number of 8 with this sql command:
+```
+INSERT INTO `users` (`id`, `name`, `email`, `password`) VALUES (8, 'Visitor', 'test@gmail.com', '$2y$10$1KqJrmpixqLY36gIyllJfuQFWreJbVw7ZYiTtXcuXHQ1WX7qILZcS')
+```
+ 5. create a memos table with these properties: 
+ [![Capture.jpg](https://i.postimg.cc/g2SdppjZ/Capture.jpg)](https://postimg.cc/WdkxmQMN)
+ 6. create a todos table with these properties: 
+ [![Capture.jpg](https://i.postimg.cc/ZRmwDBmF/Capture.jpg)](https://postimg.cc/p90Qmdpp)
+ 7. run the apache and mysql in your xampp control panel
+ 
+ ## Results
+ [![ezgif-3-e61eb84aa8e5.gif](https://i.postimg.cc/9Qy4W1s2/ezgif-3-e61eb84aa8e5.gif)](https://postimg.cc/cv41h7sk)
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## My process
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Built with
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- [PHP](https://www.php.net/) - For connecting the backend to the frontend
+- [MySQL](https://www.mysql.com/) - Database service
+- [Apache](https://httpd.apache.org/) - For HTTP server
+- [JWT](https://jwt.io/) - For token authentication
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### What I learned
 
-## Learn More
+In the process of this project, I learned a lot of things. Here are some of them:
+- Connecting the sql database to the front end using api calls
+- Binding data from user's input in the UI to php
+- Making POST, GET, UPDATE, and DELETE queries
+- How to debug in php using echo calls 
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Useful resources
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- [React JS + PHP + MySQL DB Login & Registration System](https://www.w3jar.com/react-js-php-mysql-db-login-registration-system/) - This helped me create the loginand registration system of this app.
+- [Getting started with React.js & PHP](https://www.youtube.com/watch?v=BPGIrau9dW4&t=99s&ab_channel=Keith%2CtheCoder) - This is an amazing video that helped me in connecting my frontend folder to the backend folder using react and php
 
-### Code Splitting
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Acknowledgments
 
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Thank you to Sir Mark Phil B. Pacot, our IT107 professor, who gave this project as our assignment. This was a great learning experience for me and I'm sure I'll be able to use what I learned in this project in my next CRUD applications.
