@@ -2,7 +2,7 @@
 
 <div align="center">
   <h3>
-    This is a problem to add new users to mysql database with chosen grants. The user can also log in to see the privileges given to him/her.
+    This is a problem to add new users to mysql database with chosen grants. The user can also log in to see the privileges given to user.
     </br>
   </br>
     <a href="https://www.youtube.com/watch?v=YZBp2fa34uA">Video Demo</a>
