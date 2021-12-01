@@ -1,9 +1,11 @@
-import { Container, IconButton, Tooltip } from "@mui/material";
+import { Container, IconButton, Tooltip, Typography } from "@mui/material";
 import { styled } from "@mui/system";
 import GrantsTable from "../components/GrantsTable";
 
 import LogoutIcon from "@mui/icons-material/Logout";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
+import { useContext } from "react";
+import { AppContext } from "../App";
 
 const Wrapper = styled("div")(({ theme }) => ({
   minHeight: "100vh",
@@ -12,6 +14,8 @@ const Wrapper = styled("div")(({ theme }) => ({
 
 const User = () => {
   const navigate = useNavigate();
+  const { userDatabase } = useContext(AppContext);
+  const { user } = useParams();
 
   const handleLogout = () => {
     navigate("/", { replace: true });
@@ -20,6 +24,12 @@ const User = () => {
   return (
     <Wrapper>
       <Container>
+        <Typography component="h1" variant="h4">
+          Hi there, {user}!
+        </Typography>
+        <Typography component="h2" variant="h5">
+          Here are your powers over {userDatabase}
+        </Typography>
         <Tooltip title="logout">
           <IconButton sx={{ float: "right", mb: 3 }} onClick={handleLogout}>
             <LogoutIcon />

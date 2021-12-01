@@ -35,6 +35,7 @@ const LoginForm = () => {
     setLoginError,
     takeGrantsString,
     currency,
+    setUserDatabase,
   } = useContext(AppContext);
 
   const navigate = useNavigate();
@@ -60,7 +61,9 @@ const LoginForm = () => {
         database,
       };
 
-      console.log(entry);
+      database === "*"
+        ? setUserDatabase("all databases")
+        : setUserDatabase(`the database: ${database}`);
 
       const access = await getUserPriviledges(entry);
 

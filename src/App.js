@@ -13,9 +13,11 @@ function App() {
   const [grants, setGrants] = useState(null);
   const [chosenGrants, setChosenGrants] = useState([]);
   const [loginError, setLoginError] = useState(false);
+  const [signUpError, setSignUpError] = useState(false);
   const [privilegeError, setPrivilegeError] = useState(false);
   const [success, setSuccess] = useState(false);
   const [currency, setCurrency] = useState("*");
+  const [userDatabase, setUserDatabase] = useState("null");
 
   const dataGrants =
     currency === "*"
@@ -58,6 +60,7 @@ function App() {
       "http://localhost/machine-problem-1/server/get-grants.php",
       entry
     );
+
     const data = res.data;
     return data;
   };
@@ -96,7 +99,9 @@ function App() {
         }-user.php`,
         entry
       )
-      .then((res) => console.log(res));
+      .then((res) => {
+        res.data.success === 0 ? setSignUpError(true) : setSuccess(true);
+      });
   };
 
   const takeGrantsString = (access) => {
@@ -133,6 +138,13 @@ function App() {
       }, 3000);
   }, [privilegeError]);
 
+  useEffect(() => {
+    signUpError &&
+      setTimeout(() => {
+        setSignUpError(false);
+      }, 3000);
+  }, [signUpError]);
+
   return (
     <div className="App">
       {loginError && (
@@ -150,6 +162,15 @@ function App() {
           severity="warning"
         >
           Choose atleast one privilege!
+        </Alert>
+      )}
+
+      {signUpError && (
+        <Alert
+          sx={{ position: "sticky", top: 0, zIndex: 1000 }}
+          severity="warning"
+        >
+          Enter valid values!
         </Alert>
       )}
 
@@ -183,6 +204,8 @@ function App() {
           currency,
           setCurrency,
           takeGrantsString,
+          setUserDatabase,
+          userDatabase,
         }}
       >
         <Router>
