@@ -1,10 +1,11 @@
 import { Button, TextField, Typography } from "@mui/material";
 import { styled } from "@mui/system";
-import { useContext } from "react";
+import { createContext, useContext } from "react";
 import { AppContext } from "../App";
 import GrantOptions from "./GrantOptions";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import SelectDatabase from "./SelectDatabase";
 
 const validationSchema = yup.object({
   username: yup.string("Enter your username").required("Username is required"),
@@ -31,6 +32,8 @@ const OptionsWrapper = styled("div")(({ theme }) => ({
   flexWrap: "wrap",
 }));
 
+export const AddUserContext = createContext(null);
+
 const AddUserForm = () => {
   const {
     setToggleForm,
@@ -40,6 +43,7 @@ const AddUserForm = () => {
     chosenGrants,
     insertNewUser,
     setPrivilegeError,
+    currency,
   } = useContext(AppContext);
 
   const formik = useFormik({
@@ -54,6 +58,7 @@ const AddUserForm = () => {
       const username = values.username;
       const password = values.password;
       const host = values.host;
+      const database = currency;
       const grants =
         chosenGrants.length < 28 ? chosenGrants.toString() : "ALL PRIVILEGES";
 
@@ -61,10 +66,10 @@ const AddUserForm = () => {
         username,
         password,
         host,
+        database,
         grants,
       };
 
-      console.log(entry, chosenGrants.length);
       chosenGrants.length !== 0
         ? insertNewUser(entry)
         : setPrivilegeError(true);
@@ -107,6 +112,8 @@ const AddUserForm = () => {
         error={formik.touched.password && Boolean(formik.errors.password)}
         helperText={formik.touched.password && formik.errors.password}
       />
+
+      <SelectDatabase />
 
       <Typography
         color="GrayText"

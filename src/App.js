@@ -11,7 +11,17 @@ export const AppContext = createContext(null);
 function App() {
   const [toggleForm, setToggleForm] = useState(true);
   const [grants, setGrants] = useState(null);
-  const dataGrants = ["SELECT", "INSERT", "UPDATE", "DELETE", "FILE"];
+  const [chosenGrants, setChosenGrants] = useState([]);
+  const [loginError, setLoginError] = useState(false);
+  const [privilegeError, setPrivilegeError] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [currency, setCurrency] = useState("*");
+
+  const dataGrants =
+    currency === "*"
+      ? ["SELECT", "INSERT", "UPDATE", "DELETE", "FILE"]
+      : ["SELECT", "INSERT", "UPDATE", "DELETE"];
+
   const strucGrants = [
     "CREATE",
     "ALTER",
@@ -26,23 +36,22 @@ function App() {
     "EVENT",
     "TRIGGER",
   ];
-  const adGrants = [
-    "GRANT",
-    "SUPER",
-    "PROCESS",
-    "RELOAD",
-    "SHUTDOWN",
-    "SHOW DATABASES",
-    "LOCK TABLES",
-    "REFERENCES",
-    "REPLICATION CLIENT",
-    "REPLICATION SLAVE",
-    "CREATE USER",
-  ];
-  const [chosenGrants, setChosenGrants] = useState([]);
-  const [loginError, setLoginError] = useState(false);
-  const [privilegeError, setPrivilegeError] = useState(false);
-  const [success, setSuccess] = useState(false);
+  const adGrants =
+    currency === "*"
+      ? [
+          "GRANT",
+          "SUPER",
+          "PROCESS",
+          "RELOAD",
+          "SHUTDOWN",
+          "SHOW DATABASES",
+          "LOCK TABLES",
+          "REFERENCES",
+          "REPLICATION CLIENT",
+          "REPLICATION SLAVE",
+          "CREATE USER",
+        ]
+      : ["GRANT", "LOCK TABLES", "REFERENCES"];
 
   const getUserPriviledges = async (entry) => {
     const res = await axios.post(
@@ -54,8 +63,12 @@ function App() {
   };
 
   const getGrantsArray = (data) => {
-    const sliceIndex = data.indexOf("ON *");
+    const sliceIndex = data.includes("*.*")
+      ? data.indexOf("ON *")
+      : data.indexOf("ON `");
+
     const grantsArr = data.substring(6, sliceIndex - 1).split(", ");
+
     grantsArr[0] === "ALL PRIVILEGES"
       ? setGrants([].concat(dataGrants, strucGrants, adGrants))
       : setGrants(grantsArr);
@@ -77,8 +90,26 @@ function App() {
 
   const insertNewUser = async (entry) => {
     axios
-      .post(`http://localhost/machine-problem-1/server/add-user.php`, entry)
-      .then((res) => setSuccess(true));
+      .post(
+        `http://localhost/machine-problem-1/server/${
+          entry.database === "*" ? "global" : "database"
+        }-user.php`,
+        entry
+      )
+      .then((res) => console.log(res));
+  };
+
+  const takeGrantsString = (access) => {
+    let grantString;
+    if (typeof access === "string") {
+      grantString = access.substring(access.indexOf(`}`) + 7, access.length);
+    }
+
+    if (typeof access === "object") {
+      grantString = access[0];
+    }
+
+    return grantString;
   };
 
   useEffect(() => {
@@ -109,7 +140,7 @@ function App() {
           sx={{ position: "sticky", top: 0, zIndex: 1000 }}
           severity="error"
         >
-          Wrong login input/s!
+          No user found!
         </Alert>
       )}
 
@@ -149,6 +180,9 @@ function App() {
           setLoginError,
           setPrivilegeError,
           setSuccess,
+          currency,
+          setCurrency,
+          takeGrantsString,
         }}
       >
         <Router>

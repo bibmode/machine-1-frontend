@@ -5,6 +5,7 @@ import { AppContext } from "../App";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
+import SelectDatabase from "./SelectDatabase";
 
 const validationSchema = yup.object({
   username: yup.string("Enter your username").required("Username is required"),
@@ -27,8 +28,14 @@ const Submit = styled(Button)(({ theme }) => ({
 }));
 
 const LoginForm = () => {
-  const { setToggleForm, getUserPriviledges, getGrantsArray, setLoginError } =
-    useContext(AppContext);
+  const {
+    setToggleForm,
+    getUserPriviledges,
+    getGrantsArray,
+    setLoginError,
+    takeGrantsString,
+    currency,
+  } = useContext(AppContext);
 
   const navigate = useNavigate();
 
@@ -37,27 +44,45 @@ const LoginForm = () => {
       username: "",
       password: "",
       host: "",
+      database: "",
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       const username = values.username;
       const password = values.password;
       const host = values.host;
+      const database = currency;
 
       const entry = {
         username,
         password,
         host,
+        database,
       };
+
+      console.log(entry);
 
       const access = await getUserPriviledges(entry);
 
-      if (access.includes("Access denied")) {
+      let dbSpecificGrants;
+
+      if (database !== "Global") {
+        dbSpecificGrants = takeGrantsString(access);
+
+        if (dbSpecificGrants.includes("thrown")) {
+          setLoginError(true);
+          return;
+        }
+      }
+
+      if (access[0] === "<" || !dbSpecificGrants) {
         setLoginError(true);
         return;
       }
 
-      getGrantsArray(access);
+      database === "Global"
+        ? getGrantsArray(access[0])
+        : getGrantsArray(dbSpecificGrants);
       navigate(`/${values.username}`, { replace: true });
     },
   });
@@ -86,6 +111,7 @@ const LoginForm = () => {
         error={formik.touched.host && Boolean(formik.errors.host)}
         helperText={formik.touched.host && formik.errors.host}
       />
+      <SelectDatabase />
       <Input
         id="password"
         name="password"
