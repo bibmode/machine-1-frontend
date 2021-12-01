@@ -1,70 +1,135 @@
-# Getting Started with Create React App
+# MACHINE 1 PROBLEM - IT107
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<div align="center">
+  <h3>
+    This is a problem to add new users to mysql database with chosen grants. The user can also log in to see the privileges given to him/her.
+  </h3>
+</div>
 
-## Available Scripts
+## Table of contents
 
-In the project directory, you can run:
+- [Overview](#overview)
+  - [The challenge](#the-challenge)
+- [1. Adding new user](#adding-new-user)
+  - [SQL commands](#sql-commands-1)
+- [2. Login user and show grants](#login-user-and-show-grants)
+  - [Login page](#login-page)
+  - [User page](#user-page)
+  - [SQL commands](#sql-commands-2)
+- [User Database](#user-database)
+- [My process](#my-process)
+  - [Built with](#built-with)
+  - [What I learned](#what-i-learned)
+  - [Useful resources](#useful-resources)
+- [Acknowledgments](#acknowledgments)
 
-### `npm start`
+**Note: Delete this note and update the table of contents based on what sections you keep.**
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Overview
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### The challenge:
+- Perform the adding of user/s to SQL database with limited privileges (own choice) via web-based interface.
+- Develop a web-based login page for the authentication of users before the system's access.
+- Create a webpage that will display the user's assigned privileges every after successful entry to the system.
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Adding new user:
+- The user can set one or more grants. If all grants are selected, the grants will automatically grant ALL PRIVILEGES to the new user made.
 
-### `npm run build`
+[![screencapture-localhost-3000-2021-11-30-23-01-28.png](https://i.postimg.cc/NjC9stnX/screencapture-localhost-3000-2021-11-30-23-01-28.png)](https://postimg.cc/DSsy69nf)
+ 
+ ### SQL commands 1:
+ -This is a snippet from the add-user.php file [here](https://github.com/bibmode/machine-1-backend/blob/main/server/add-user.php)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```
+  $username = htmlspecialchars(trim($data->username));
+  $password = htmlspecialchars(trim($data->password));
+  $host = htmlspecialchars(trim($data->host));
+  $grants = htmlspecialchars(trim($data->grants));
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+  $query = "CREATE USER :username@:host IDENTIFIED BY :password";
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+  $stmt = $conn->prepare($query);
 
-### `npm run eject`
+  $stmt->bindValue(':username', $username, PDO::PARAM_STR);
+  $stmt->bindValue(':password', $password, PDO::PARAM_STR);
+  $stmt->bindValue(':host', $host, PDO::PARAM_STR);
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+  if ($stmt->execute()) {
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+    $query2 = "GRANT $grants ON * . * TO $username@$host";
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+    $stmt2 = $conn->prepare($query2);
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+    $stmt2->execute();
 
-## Learn More
+    echo json_encode([
+      'success' => 1,
+      'message' => 'added user to system.'
+    ]);
+    exit;
+  }
+ ```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Login user and show grants:
 
-### Code Splitting
+ ### login page
+[![screencapture-localhost-3000-2021-11-30-23-18-16.png](https://i.postimg.cc/Fzgtp9Sn/screencapture-localhost-3000-2021-11-30-23-18-16.png)](https://postimg.cc/Cn16Lpmj)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+ ### user page
+[![screencapture-localhost-3000-genebeeeb-2021-11-30-23-20-12.png](https://i.postimg.cc/yYV2BCcs/screencapture-localhost-3000-genebeeeb-2021-11-30-23-20-12.png)](https://postimg.cc/NLzd7Vdz)
+ 
+ ### SQL commands 2:
+ -This is a snippet from the get-grants.php file [here](https://github.com/bibmode/machine-1-backend/blob/main/server/get-grants.php)
+ 
+```
+  $username = htmlspecialchars(trim($data->username));
+  $host = htmlspecialchars(trim($data->host));
+  $password = htmlspecialchars(trim($data->password));
 
-### Analyzing the Bundle Size
+  $mysqli = new mysqli($host, $username, $password);
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+  if ($mysqli->connect_errno) {
+    echo "Failed to connect to MySQL: " . $mysqli->connect_error;
+    exit();
+  }
 
-### Making a Progressive Web App
+  $result = $mysqli->query("SHOW GRANTS for $username@$host");
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+  while ($row = mysqli_fetch_array($result)) {
+    echo json_encode($row[0]);
+  }
+```
 
-### Advanced Configuration
+## User database:
+ - This is the final database with the new user added
+[![screencapture-localhost-phpmyadmin-index-php-2021-11-30-23-29-17.jpg](https://i.postimg.cc/HsNx7zpc/screencapture-localhost-phpmyadmin-index-php-2021-11-30-23-29-17.jpg)](https://postimg.cc/bsQ87QSp)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## My process
 
-### Deployment
+### Built with
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+- [PHP](https://www.php.net/) - For connecting the backend to the frontend
+- [MySQL](https://www.mysql.com/) - Database service
+- [Apache](https://httpd.apache.org/) - For HTTP server
+- [React](https://reactjs.org/) - Front frontend javascript library/framework
+- [Material UI](https://mui.com/) - CSS components library 
+- [Formik](https://formik.org/) - Form handling library
+- [Yup](https://github.com/jquense/yup) - Form validation library
 
-### `npm run build` fails to minify
+### What I learned
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+In the process of this project, I learned a lot of things. Here are some of them:
+- Creating new user in mysql using php
+- Getting user grants from mysql database
+
+### Useful resources
+
+- [PHP Cheat Sheet](https://overapi.com/php) - List of all PHP methods.
+- [Learning About Electronics](http://www.learningaboutelectronics.com/PHP/) - This is a wonderful resource of PHP tutorials
+
+
+## Acknowledgments
+
+Thank you to Sir Mark Phil B. Pacot, our IT107 professor, who gave this project as our assignment.
